@@ -1,10 +1,19 @@
 FROM php:8.2-apache
 
-# Install MySQLi extension
-RUN docker-php-ext-install mysqli
+# Install MySQL extensions
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Configure Apache to listen on the Railway port
-RUN echo "Listen 0.0.0.0:${PORT}" > /etc/apache2/ports.conf
+# Enable Apache mod_rewrite (common for PHP apps)
+RUN a2enmod rewrite
 
-# Copy your application files
+# Copy project files into the container
 COPY . /var/www/html/
+
+# Apache already listens correctly inside Railway
+# No need to modify ports.conf
+
+# Railway sets PORT; Apache expects port 80 inside container
+EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]
