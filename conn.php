@@ -5,13 +5,11 @@ $pass = getenv('MYSQLPASSWORD');
 $db   = getenv('MYSQLDATABASE');
 $port = getenv('MYSQLPORT');
 
-try {
-    $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
-    $pdo = new PDO($dsn, $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$conn = @mysqli_connect($host, $user, $pass, $db, $port);
 
-    echo "Connected successfully!";
-} catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+} else {
+    echo "Database connected!";
 }
 ?>
