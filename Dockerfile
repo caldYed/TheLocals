@@ -8,6 +8,7 @@ RUN a2dismod mpm_event || true \
     && a2enmod mpm_prefork
 
 RUN a2enmod rewrite
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 COPY . /var/www/html/
 
